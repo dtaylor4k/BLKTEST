@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "cors": "^2.8.5",
     "netlify": "^13.1.14",
     "netlify-cli": "^17.17.0",
     "node-fetch": "^3.3.2",
