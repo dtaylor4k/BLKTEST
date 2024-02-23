@@ -6,6 +6,7 @@ exports.handler = async (event, context) => {
         "Access-Control-Allow-Origin": "*", // Or specify your domains
         "Access-Control-Allow-Headers": "*",
         "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
+        "Content-Type": "application/json",
         //"Origin, X-Requested-With, Content-Type, Accept, Authorization",
     };
 
