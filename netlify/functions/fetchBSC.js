@@ -6,6 +6,7 @@ exports.handler = async (event, context) => {
         "Access-Control-Allow-Origin": "*", // Or specify your domains
         "Access-Control-Allow-Headers": "Content-Type",
         "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
+        "Origin, X-Requested-With, Content-Type, Accept, Authorization",
     };
 
     // Handle OPTIONS request for CORS preflight
