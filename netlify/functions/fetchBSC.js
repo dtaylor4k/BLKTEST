@@ -18,6 +18,16 @@ exports.handler = async (event, context) => {
         };
     }
 
+    if (event.httpMethod !== "POST") {
+        return {
+            statusCode: 405, // Method Not Allowed
+            headers,
+            body: JSON.stringify({ message: "Method Not Allowed" }),
+        };
+    }    
+    
+    
+        
     // Your existing code here
     const { walletAddress } = JSON.parse(event.body);
     const apiKey = process.env.BSC_API_KEY; // Make sure this API key is set in your Netlify environment variables
