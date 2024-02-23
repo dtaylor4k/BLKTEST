@@ -19,41 +19,35 @@ exports.handler = async (event, context) => {
     }
 
     if (event.httpMethod !== "POST") {
-        return {
-            statusCode: 405, // Method Not Allowed
-            headers,
-            body: JSON.stringify({ message: "Method Not Allowed" }),
-        };
+    // Your existing code here
+        const { walletAddress } = JSON.parse(event.body);
+        const apiKey = process.env.BSC_API_KEY; // Make sure this API key is set in your Netlify environment variables
+        const url = `https://api.bscscan.com/api?module=account&action=balance&address=${walletAddress}&apikey=${apiKey}`;
+        
+        try {
+            const response = await fetch(url);
+            const result = await response.json();
+    
+            if (result.status === "1") {
+                const balance = Web3.utils.fromWei(result.result, 'ether');
+                const formattedBalance = parseFloat(balance).toFixed(4);
+    
+                return {
+                    statusCode: 200,
+                    headers,
+                    body: JSON.stringify({ balance: formattedBalance }),
+                };
+            } else {
+                throw new Error('Failed to fetch balance');
+            }
+        } catch (error) {
+            return {
+                statusCode: 500,
+                headers,
+                body: JSON.stringify({ error: 'Failed to fetch balance' }),
+            };
+        }
     }    
     
-    
         
-    // Your existing code here
-    const { walletAddress } = JSON.parse(event.body);
-    const apiKey = process.env.BSC_API_KEY; // Make sure this API key is set in your Netlify environment variables
-    const url = `https://api.bscscan.com/api?module=account&action=balance&address=${walletAddress}&apikey=${apiKey}`;
-    
-    try {
-        const response = await fetch(url);
-        const result = await response.json();
-
-        if (result.status === "1") {
-            const balance = Web3.utils.fromWei(result.result, 'ether');
-            const formattedBalance = parseFloat(balance).toFixed(4);
-
-            return {
-                statusCode: 200,
-                headers,
-                body: JSON.stringify({ balance: formattedBalance }),
-            };
-        } else {
-            throw new Error('Failed to fetch balance');
-        }
-    } catch (error) {
-        return {
-            statusCode: 500,
-            headers,
-            body: JSON.stringify({ error: 'Failed to fetch balance' }),
-        };
-    }
 };
