@@ -1,10 +1,10 @@
 const Web3 = require('web3');
-const fetch = require("node-fetch");
+//const fetch = require("node-fetch");
 
 exports.handler = async (event) => {
     const { walletAddress } = JSON.parse(event.body);
     const apiKey = process.env.BSC_API_KEY;
-    const url = `https://api.bscscan.com/api?module=account&action=balance&address=${walletAddress}&apikey=UJUYX9GAMRPR5DUSWMVN97EDDW882CCJSH`;
+    const url = `https://api.bscscan.com/api?module=account&action=balance&address=${walletAddress}&apikey=${apiKey}`;
 
     // Pre-define CORS headers
     const headers = {
