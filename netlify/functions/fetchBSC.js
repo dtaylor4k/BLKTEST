@@ -1,5 +1,5 @@
 const Web3 = require('web3');
-const fetch = require("node-fetch");
+//const fetch = require("node-fetch");
 
 exports.handler = async (event, context) => {
     // CORS headers
