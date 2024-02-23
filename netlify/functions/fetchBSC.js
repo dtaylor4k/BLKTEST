@@ -7,7 +7,8 @@ exports.handler = async (event, context) => {
     const url = `https://api.bscscan.com/api?module=account&action=balance&address=${walletAddress}&apikey=${apiKey}`;
     const allowedDomains = [
         'https://bsnprapp123.webflow.io',
-        'https://bsnprapp123.webflow.com'
+        'https://bsnprapp123.webflow.com',
+        'https://steady-cupcake-2fdf47.netlify.app'
     ];
     
     // Check the Origin header of the incoming request
