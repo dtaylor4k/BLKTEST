@@ -4,7 +4,7 @@ const fetch = require("node-fetch");
 exports.handler = async (event) => {
     const { walletAddress } = JSON.parse(event.body);
     const apiKey = process.env.BSC_API_KEY;
-    const url = `https://api.bscscan.com/api?module=account&action=balance&address=${walletAddress}&apikey=${apiKey}`;
+    const url = `https://api.bscscan.com/api?module=account&action=balance&address=${walletAddress}&apikey=UJUYX9GAMRPR5DUSWMVN97EDDW882CCJSH`;
 
     // Pre-define CORS headers
     const headers = {
