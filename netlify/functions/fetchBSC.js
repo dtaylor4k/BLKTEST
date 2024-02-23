@@ -3,10 +3,9 @@ const Web3 = require('web3');
 exports.handler = async (event, context) => {
     // CORS headers
     const headers = {
-        "Access-Control-Allow-Origin": "*", // Or specify your domains
-        "Access-Control-Allow-Headers": "Content-Type",
-        "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
-        "Content-Type": "application/json",
+      "access-control-allow-origin": "*",
+      'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+      'Access-Control-Allow-Methods': '*',
         //"Origin, X-Requested-With, Content-Type, Accept, Authorization",
     };
 
