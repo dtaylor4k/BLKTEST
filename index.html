@@ -1796,7 +1796,7 @@ async function fetchSolanaBalance(walletAddress) {
 }
 //Get URL + API for BSC
 async function fetchBscBalance(walletAddress) {
-  const url = "/.netlify/functions/fetchbsc";
+  const url = "/.netlify/functions/fetchBSC";
   try {
     const response = await fetch(url, {
       method: 'POST', // Assuming your serverless function expects a POST request
