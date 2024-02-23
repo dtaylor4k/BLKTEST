@@ -2,7 +2,33 @@ const Web3 = require('web3');
 const fetch = require("node-fetch");
 
 exports.handler = async (event) => {
-    const { walletAddress } = JSON.parse(event.body);
+    // Handle OPTIONS request for CORS preflight
+    if (event.httpMethod === 'OPTIONS') {
+        return {
+            statusCode: 200,
+            headers: {
+                "Content-Type": "application/json",
+                "Access-Control-Allow-Origin": "*", // Adjust as necessary
+                "Access-Control-Allow-Headers": "Content-Type",
+                "Access-Control-Allow-Methods": "POST, OPTIONS"
+            },
+            body: ""
+        };
+    }
+
+    const { walletAddress } = event.body ? JSON.parse(event.body) : {};
+    // Use a safe default if body parsing fails or is empty
+    if (!walletAddress) {
+        return {
+            statusCode: 400,
+            headers: {
+                "Content-Type": "application/json",
+                "Access-Control-Allow-Origin": "*"
+            },
+            body: JSON.stringify({ error: 'walletAddress not provided' })
+        };
+    }
+
     const apiKey = process.env.BSC_API_KEY;
     const url = `https://api.bscscan.com/api?module=account&action=balance&address=${walletAddress}&apikey=${apiKey}`;
 
@@ -36,7 +62,7 @@ exports.handler = async (event) => {
                 "Access-Control-Allow-Headers": "Content-Type",
                 "Access-Control-Allow-Methods": "POST, OPTIONS"
             },
-            body: JSON.stringify({ error: 'Failed to fetch balance' })
+            body: JSON.stringify({ error: error.message || 'Failed to fetch balance' })
         };
     }
 };
