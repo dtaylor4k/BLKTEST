@@ -1,5 +1,3 @@
-
-
 const Web3 = require('web3');
 const fetch = require("node-fetch");
 
@@ -13,29 +11,32 @@ exports.handler = async (event) => {
         const result = await response.json();
 
         if (result.status === "1") {
-            
             const balance = Web3.utils.fromWei(result.result, 'ether');
             const formattedBalance = parseFloat(balance).toFixed(4);
 
-          return {
-              statusCode: 200,
-              headers: {
-                  "Content-Type": "application/json"
-              },
-              body: JSON.stringify({ balance: formattedBalance })
-          };
-          
+            return {
+                statusCode: 200,
+                headers: {
+                    "Content-Type": "application/json",
+                    "Access-Control-Allow-Origin": "*",
+                    "Access-Control-Allow-Headers": "Content-Type",
+                    "Access-Control-Allow-Methods": "POST, OPTIONS"
+                },
+                body: JSON.stringify({ balance: formattedBalance })
+            };
         } else {
             throw new Error('Failed to fetch balance');
         }
     } catch (error) {
         return {
-          statusCode: 500,
-          headers: {
-              "Content-Type": "application/json"
-          },
-          body: JSON.stringify({ error: 'Failed to fetch balance' })
+            statusCode: 500,
+            headers: {
+                "Content-Type": "application/json",
+                "Access-Control-Allow-Origin": "*",
+                "Access-Control-Allow-Headers": "Content-Type",
+                "Access-Control-Allow-Methods": "POST, OPTIONS"
+            },
+            body: JSON.stringify({ error: 'Failed to fetch balance' })
         };
-      
     }
 };
