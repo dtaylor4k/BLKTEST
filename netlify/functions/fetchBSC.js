@@ -1,18 +1,27 @@
 const Web3 = require('web3');
-//const fetch = require("node-fetch");
 
-exports.handler = async (event) => {
-    const { walletAddress } = JSON.parse(event.body);
-    const apiKey = process.env.BSC_API_KEY;
-    const url = `https://api.bscscan.com/api?module=account&action=balance&address=${walletAddress}&apikey=${apiKey}`;
-
-    // Pre-define CORS headers
+exports.handler = async (event, context) => {
+    // CORS headers
     const headers = {
-        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Origin": "*", // Or specify your domains
         "Access-Control-Allow-Headers": "Content-Type",
-        "Access-Control-Allow-Methods": "POST, OPTIONS"
+        "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
     };
 
+    // Handle OPTIONS request for CORS preflight
+    if (event.httpMethod === "OPTIONS") {
+        return {
+            statusCode: 200,
+            headers,
+            body: "", // No need to return any body for OPTIONS
+        };
+    }
+
+    // Your existing code here
+    const { walletAddress } = JSON.parse(event.body);
+    const apiKey = process.env.BSC_API_KEY; // Make sure this API key is set in your Netlify environment variables
+    const url = `https://api.bscscan.com/api?module=account&action=balance&address=${walletAddress}&apikey=${apiKey}`;
+    
     try {
         const response = await fetch(url);
         const result = await response.json();
@@ -23,8 +32,8 @@ exports.handler = async (event) => {
 
             return {
                 statusCode: 200,
-                headers: headers,
-                body: JSON.stringify({ balance: formattedBalance })
+                headers,
+                body: JSON.stringify({ balance: formattedBalance }),
             };
         } else {
             throw new Error('Failed to fetch balance');
@@ -32,8 +41,8 @@ exports.handler = async (event) => {
     } catch (error) {
         return {
             statusCode: 500,
-            headers: headers,
-            body: JSON.stringify({ error: 'Failed to fetch balance' })
+            headers,
+            body: JSON.stringify({ error: 'Failed to fetch balance' }),
         };
     }
 };
