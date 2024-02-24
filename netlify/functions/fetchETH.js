@@ -12,19 +12,14 @@ exports.handler = async (event) => {
         return { statusCode: 200, headers, body: "" };
     }
 
-
     const { walletAddress, networkType } = JSON.parse(event.body);
-    const apiUrl = getInfuraApiUrl(networkType, walletAddress, process.env.ETH_API_KEY);
+    const web3 = new Web3(getWeb3ProviderUrl(networkType, process.env.INFURA_API_KEY));
 
     try {
-
-        const response = await fetch(apiUrl, { headers: { 'Accept': 'application/json' } });
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        const data = await response.json();
-        const balanceInWei = data.result;
-        const balanceInEther = Web3.utils.fromWei(balanceInWei, 'ether');
+        // Fetch balance in Wei
+        const balanceInWei = await web3.eth.getBalance(walletAddress);
+        // Convert balance to Ether
+        const balanceInEther = web3.utils.fromWei(balanceInWei, 'ether');
 
         return {
             statusCode: 200,
@@ -35,23 +30,23 @@ exports.handler = async (event) => {
         return {
             statusCode: 500,
             headers,
-            body: JSON.stringify({ error: error.message })
+            body: JSON.stringify({ error: `Failed to fetch balance: ${error.message}` })
         };
     }
 };
 
-function getInfuraApiUrl(networkType, walletAddress, apiKey) {
+function getWeb3ProviderUrl(networkType, apiKey) {
     switch (networkType) {
         case "Ethereum":
-            return `https://mainnet.infura.io/v3/${apiKey}/eth_getBalance?params=["${walletAddress}", "latest"]`;
+            return `https://mainnet.infura.io/v3/${apiKey}`;
         case "Polygon":
-            return `https://polygon-mainnet.infura.io/v3/${apiKey}/eth_getBalance?params=["${walletAddress}", "latest"]`;
+            return `https://polygon-mainnet.infura.io/v3/${apiKey}`;
         case "Optimism":
-            return `https://optimism-mainnet.infura.io/v3/${apiKey}/eth_getBalance?params=["${walletAddress}", "latest"]`;
+            return `https://optimism-mainnet.infura.io/v3/${apiKey}`;
         case "Arbitrum":
-            return `https://arbitrum-mainnet.infura.io/v3/${apiKey}/eth_getBalance?params=["${walletAddress}", "latest"]`;
+            return `https://arbitrum-mainnet.infura.io/v3/${apiKey}`;
         case "Avalanche":
-            return `https://avalanche-mainnet.infura.io/v3/${apiKey}/eth_getBalance?params=["${walletAddress}", "latest"]`;
+            return `https://avalanche-mainnet.infura.io/v3/${apiKey}`;
         default:
             throw new Error(`Unsupported network type: ${networkType}`);
     }
