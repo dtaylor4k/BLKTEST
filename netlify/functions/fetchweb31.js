@@ -1,6 +1,3 @@
-const Web3 = require('web3');
-const web3 = new Web3(); // Assuming you only need utils and not a provider
-
 exports.handler = async (event) => {
     const headers = {
         "Access-Control-Allow-Origin": "*",
@@ -23,7 +20,7 @@ exports.handler = async (event) => {
         Base: process.env.BASE_API_KEY,
     };
 
-    const url = getAlchemyApiUrl(networkType, apiKeys);
+    const url = getAlchemyApiUrl(networkType, apiKeys[networkType]);
 
     try {
         const body = createRequestBody(networkType, walletAddress);
@@ -33,28 +30,35 @@ exports.handler = async (event) => {
             body: JSON.stringify(body),
         });
 
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
         const data = await response.json();
 
-        if (data.error) throw new Error(data.error.message);
+        if (data.error) {
+            throw new Error(data.error.message);
+        }
 
         const balance = extractBalance(networkType, data);
 
-        return { statusCode: 200, headers, body: JSON.stringify({ balance: balance }) };
+        return { statusCode: 200, headers, body: JSON.stringify({ balance }) };
     } catch (error) {
+        console.error("Error fetching balance:", error);
         return { statusCode: 500, headers, body: JSON.stringify({ error: error.message }) };
     }
 };
 
-function getAlchemyApiUrl(networkType, apiKeys) {
-    switch (networkType) {
-        case "Ethereum": return `https://eth-mainnet.g.alchemy.com/v2/${apiKeys['Ethereum']}`;
-        case "Polygon": return `https://polygon-mainnet.g.alchemy.com/v2/${apiKeys['Polygon']}`;
-        case "Optimism": return `https://opt-mainnet.g.alchemy.com/v2/${apiKeys['Optimism']}`;
-        case "Arbitrum": return `https://arb-mainnet.g.alchemy.com/v2/${apiKeys['Arbitrum']}`;
-        case "Solana": return `https://solana-mainnet.g.alchemy.com/v2/${apiKeys['Solana']}`;
-        case "Base": return `https://base-mainnet.g.alchemy.com/v2/${apiKeys['Base']}`;
-        default: throw new Error(`Unsupported network type: ${networkType}`);
-    }
+function getAlchemyApiUrl(networkType, apiKey) {
+    const baseUrls = {
+        Ethereum: `https://eth-mainnet.alchemyapi.io/v2/${apiKey}`,
+        Polygon: `https://polygon-mainnet.g.alchemy.com/v2/${apiKey}`,
+        Optimism: `https://opt-mainnet.g.alchemy.com/v2/${apiKey}`,
+        Arbitrum: `https://arb-mainnet.g.alchemy.com/v2/${apiKey}`,
+        Solana: `https://solana-mainnet.g.alchemy.com/v2/${apiKey}`,
+        Base: `https://base-mainnet.g.alchemy.com/v2/${apiKey}`,
+    };
+    return baseUrls[networkType] || throw new Error(`Unsupported network type: ${networkType}`);
 }
 
 function createRequestBody(networkType, walletAddress) {
@@ -66,7 +70,7 @@ function createRequestBody(networkType, walletAddress) {
             "params": [walletAddress]
         };
     } else {
-        
+        // For EVM compatible chains
         return {
             "jsonrpc": "2.0",
             "method": "eth_getBalance",
@@ -78,9 +82,9 @@ function createRequestBody(networkType, walletAddress) {
 
 function extractBalance(networkType, data) {
     if (networkType === "Solana") {
-        return (data.result.value / 1e9).toFixed(4);
+        return (data.result.value / 1e9).toFixed(4); // Convert lamports to SOL
     } else {
-        
+        // Assuming data.result is the balance in Wei for EVM chains
         return Web3.utils.fromWei(data.result, 'ether');
     }
 }
