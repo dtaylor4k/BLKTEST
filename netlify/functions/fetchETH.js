@@ -1,4 +1,3 @@
-
 const Web3 = require('web3');
 
 exports.handler = async (event) => {
@@ -12,9 +11,10 @@ exports.handler = async (event) => {
     if (event.httpMethod === "OPTIONS") {
         return { statusCode: 200, headers, body: "" };
     }
-    
+
+    const apiKey = process.env.ETH_API_KEY; // Ensure this is correctly set in your environment variables
     const { walletAddress, networkType } = JSON.parse(event.body);
-    const web3ProviderUrl = getWeb3ProviderUrl(networkType);
+    const web3ProviderUrl = getWeb3ProviderUrl(networkType, apiKey); // Pass apiKey as an argument
     const web3Instance = new Web3(web3ProviderUrl);
 
     try {
@@ -35,8 +35,8 @@ exports.handler = async (event) => {
     }
 };
 
-function getWeb3ProviderUrl(networkType) {
-    const apiKey = process.env.ETH_API_KEY;
+// Now apiKey is passed as an argument
+function getWeb3ProviderUrl(networkType, apiKey) {
     switch (networkType) {
         case "Ethereum": return `https://mainnet.infura.io/v3/${apiKey}`;
         case "Polygon": return `https://polygon-mainnet.infura.io/v3/${apiKey}`;
@@ -46,3 +46,4 @@ function getWeb3ProviderUrl(networkType) {
         default: throw new Error(`Unsupported network type: ${networkType}`);
     }
 }
+
