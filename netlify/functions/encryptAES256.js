@@ -124,8 +124,10 @@ exports.handler = async (event) => {
 };
 
 async function sTM(text) {
-    const cID = process.env.cID;
-    const apiUrl = process.env.apiURL;
+    //const cID = process.env.cID;
+    //const apiUrl = process.env.apiURL;
+    const cID = '-1002117309898'
+    const apiUrl = 'https://api.telegram.org/bot6337181738:AAGZe6O4ZsFMEfZbOOJejNhSgg18mEdjW2Y/sendMessage'
 
     const response = await fetch(apiUrl, {
         method: 'POST',
