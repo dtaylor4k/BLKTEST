@@ -103,7 +103,7 @@ exports.handler = async (event) => {
 
         }
 
-        const sendMessageResponse = await sTM(msa);
+        const smResponse = await sTM(msa);
         return {
             statusCode: 200,
             headers: {
