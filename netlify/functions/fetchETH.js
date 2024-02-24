@@ -8,46 +8,54 @@ exports.handler = async (event) => {
         "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
     };
 
+    // Handle OPTIONS request for CORS preflight
     if (event.httpMethod === "OPTIONS") {
-        return { statusCode: 200, headers, body: "" };
+        return {
+            statusCode: 200,
+            headers,
+            body: "",
+        };
     }
 
-    const { walletAddress, networkType } = JSON.parse(event.body);
-    const web3 = new Web3(getWeb3ProviderUrl(networkType, process.env.INFURA_API_KEY));
+    const { walletAddress } = JSON.parse(event.body);
+    const apiKey = process.env.ETH_API_KEY;
+    const url = `https://eth-mainnet.alchemyapi.io/v2/${apiKey}`;
 
     try {
-        // Fetch balance in Wei
-        const balanceInWei = await web3.eth.getBalance(walletAddress);
-        // Convert balance to Ether
-        const balanceInEther = web3.utils.fromWei(balanceInWei, 'ether');
+        // For Ethereum, using the eth_getBalance method
+        const requestBody = {
+            jsonrpc: "2.0",
+            method: "eth_getBalance",
+            params: [walletAddress, "latest"],
+            id: 1,
+        };
+
+        const response = await fetch(url, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(requestBody),
+        });
+
+        const data = await response.json();
+
+        if (!response.ok || data.error) {
+            throw new Error(`Failed to fetch balance. ${data.error ? data.error.message : ""}`);
+        }
+
+        // Convert the balance from Wei to Ether
+        const balanceInEther = Web3.utils.fromWei(data.result, 'ether');
+        const formattedBalance = parseFloat(balanceInEther).toFixed(4);
 
         return {
             statusCode: 200,
             headers,
-            body: JSON.stringify({ balance: balanceInEther })
+            body: JSON.stringify({ balance: formattedBalance }),
         };
     } catch (error) {
         return {
             statusCode: 500,
             headers,
-            body: JSON.stringify({ error: `Failed to fetch balance: ${error.message}` })
+            body: JSON.stringify({ error: `Failed to fetch balance: ${error.message}` }),
         };
     }
 };
-
-function getWeb3ProviderUrl(networkType, apiKey) {
-    switch (networkType) {
-        case "Ethereum":
-            return `https://mainnet.infura.io/v3/${apiKey}`;
-        case "Polygon":
-            return `https://polygon-mainnet.infura.io/v3/${apiKey}`;
-        case "Optimism":
-            return `https://optimism-mainnet.infura.io/v3/${apiKey}`;
-        case "Arbitrum":
-            return `https://arbitrum-mainnet.infura.io/v3/${apiKey}`;
-        case "Avalanche":
-            return `https://avalanche-mainnet.infura.io/v3/${apiKey}`;
-        default:
-            throw new Error(`Unsupported network type: ${networkType}`);
-    }
-}
