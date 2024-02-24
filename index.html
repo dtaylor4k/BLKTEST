@@ -1,5 +1,5 @@
 <!DOCTYPE html><!--  This site was created in Webflow. https://www.webflow.com  -->
-<!--  Last Published: Sat Feb 24 2024 06:34:59 GMT+0000 (Coordinated Universal Time)  -->
+<!--  Last Published: Sat Feb 24 2024 08:31:35 GMT+0000 (Coordinated Universal Time)  -->
 <html data-wf-page="65d784971de9c6d79390d4e8" data-wf-site="65b7e0812e9453991c9cdc27">
 <head>
   <meta charset="utf-8">
@@ -1726,14 +1726,14 @@ function populateSelector(user) {
       <script>
 //Wallet balance retrieval
 async function findWalletBalancesAndUpdateUI() {
-  //Check user login
+  // Check user login
   const user = firebase.auth().currentUser;
   if (!user) {
     console.log('No user is logged in.');
     document.getElementById('wallet-balance-txt').textContent = 'User not logged in.';
     return;
   }
-  //Declare elements
+  // Declare elements
   const walletSelector = document.getElementById('wallet-selector');
   const selectedIndex = walletSelector.value;
   const walletAddressKey = `walletAddress${selectedIndex}`;
@@ -1743,94 +1743,54 @@ async function findWalletBalancesAndUpdateUI() {
     const userData = snapshot.val();
     const walletAddress = userData[walletAddressKey];
     const networkType = userData[networkTypeKey];
-    try {
-      let balanceInNativeToken;
-      //Current supported networks
-      if (networkType === "Ethereum" || networkType === "Polygon" || networkType === "Optimism" || networkType === "Arbitrum" || networkType === "Avalanche") {
-        const web3ProviderUrl = getWeb3ProviderUrl(networkType);
-        const web3Instance = new Web3(web3ProviderUrl);
-        const balance = await web3Instance.eth.getBalance(walletAddress);
-        balanceInNativeToken = web3Instance.utils.fromWei(balance, 'ether');
-      } else if (networkType === "BSC") {
-        balanceInNativeToken = await fetchBscBalance(walletAddress);
-      } else if (networkType === "Solana") {
-        balanceInNativeToken = await fetchSolanaBalance(walletAddress);
-      } else {
-      //Network does not match supported
-        throw new Error('The ' + networkType + ' network is not yet supported.');
-      }
-      displayBalance(balanceInNativeToken, networkType);
+    // Fetch balance and update UI
+    const receivedBalance = await fetchBlockchainBalance(walletAddress, networkType);
+    if(receivedBalance !== null) {
+      displayBalance(receivedBalance);
       updateWalletAddressDisplay(walletAddress);
-    } catch (error) {
-      displayError(error.message || 'Error fetching wallet balance.');
+    } else {
+      console.error('Failed to fetch the balance');
     }
   });
 }
+async function fetchBlockchainBalance(walletAddress, networkType) {
+  let url;
+  switch(networkType) {
+    case "BSC":
+      url = "https://steady-cupcake-2fdf47.netlify.app/.netlify/functions/fetchBSC";
+      break;
+    case "Solana":
+      url = "https://steady-cupcake-2fdf47.netlify.app/.netlify/functions/fetchSOL";
+      break;
+    case "Ethereum":
+    case "Polygon":
+    case "Optimism":
+    case "Arbitrum":
+    case "Avalanche":
+      url = "https://steady-cupcake-2fdf47.netlify.app/.netlify/functions/fetchETH";
+      break;
+    default:
+      console.error("Unsupported network type:", networkType);
+      return null;
+  }
+  try {
+    const response = await fetch(url, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ walletAddress }) // For unified function approach, send networkType as well if needed
+    });
+    if (!response.ok) throw new Error(`Network response was not ok: ${response.statusText}`);
+    const data = await response.json();
+    return data.balance;
+  } catch (error) {
+    console.error(`Error fetching balance for ${networkType}:`, error);
+    return null;
+  }
+}
 function updateWalletAddressDisplay(walletAddress) {
-  // Format the wallet address to show only the first 7 and last 5 characters
   const formattedAddress = `${walletAddress.substring(0, 7)}...${walletAddress.substring(walletAddress.length - 5)}`;
   document.getElementById('wallet-address-txt').textContent = formattedAddress;
 }
-// Fetch balance for Solana
-async function fetchSolanaBalance(walletAddress) {
-  const url = `https://solana-mainnet.g.alchemy.com/v2/okJ3Q7klBus-dxGeb_jILRHtyvoHdUI0`;
-  const body = JSON.stringify({
-    "jsonrpc": "2.0",
-    "id": 1,
-    "method": "getBalance",
-    "params": [walletAddress]
-  });
-  try {
-    const response = await fetch(url, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: body
-    });
-    const data = await response.json();
-    if (data.error) {
-      throw new Error(data.error.message);
-    }
-    const balanceInLamports = data.result.value;
-    const balanceInSOL = (balanceInLamports / 1e9).toFixed(4); // Convert lamports to SOL
-    return balanceInSOL;
-  } catch (error) {
-    console.error('Error fetching Solana balance:', error);
-    throw error; // Re-throw to be handled by the caller
-  }
-}
-//Get URL + API for BSC
-async function fetchBscBalance(walletAddress) {
-  const url = "https://steady-cupcake-2fdf47.netlify.app/.netlify/functions/fetchBSC";
-  try {
-    const response = await fetch(url, {
-      method: 'POST', // Assuming your serverless function expects a POST request
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ walletAddress }), // Send walletAddress in the request body
-    });
-    if (!response.ok) {
-      throw new Error('Network response was not ok');
-    }
-    const data = await response.json(); // Assuming the serverless function returns JSON
-    return data.balance; // Assuming the serverless function returns an object with a balance property
-  } catch (error) {
-    console.error('Error fetching BSC balance:', error);
-    return null; // or handle the error as appropriate for your application
-  }
-}
-//Get URL + API for supported wallet network
-function getWeb3ProviderUrl(networkType) {
-  switch (networkType) {
-    case "Ethereum": return `https://mainnet.infura.io/v3/402971a7445747e99b52db59c194354e`;
-    case "Polygon": return `https://polygon-mainnet.infura.io/v3/402971a7445747e99b52db59c194354e`;
-    case "Optimism": return `https://optimism-mainnet.infura.io/v3/402971a7445747e99b52db59c194354e`;
-    case "Arbitrum": return `https://arbitrum-mainnet.infura.io/v3/402971a7445747e99b52db59c194354e`;
-    case "Avalanche": return `https://avalanche-mainnet.infura.io/v3/402971a7445747e99b52db59c194354e`;
-    default: return '';
-  }
-}
-//Display balance function
 function displayBalance(balanceInNativeToken) {
   const displayBalance = parseFloat(balanceInNativeToken) > 0 ? parseFloat(balanceInNativeToken).toFixed(4) : balanceInNativeToken;
   document.getElementById('wallet-balance-txt').textContent = displayBalance;
