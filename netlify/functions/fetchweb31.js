@@ -39,7 +39,7 @@ exports.handler = async (event) => {
 
         const balance = extractBalance(networkType, data);
 
-        return { statusCode: 200, headers, body: JSON.stringify({ balance }) };
+        return { statusCode: 200, headers, body: JSON.stringify({ balance: balance }) };
     } catch (error) {
         return { statusCode: 500, headers, body: JSON.stringify({ error: error.message }) };
     }
