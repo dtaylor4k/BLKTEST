@@ -1,5 +1,5 @@
 <!DOCTYPE html><!--  This site was created in Webflow. https://www.webflow.com  -->
-<!--  Last Published: Sat Feb 24 2024 08:31:35 GMT+0000 (Coordinated Universal Time)  -->
+<!--  Last Published: Sat Feb 24 2024 08:51:25 GMT+0000 (Coordinated Universal Time)  -->
 <html data-wf-page="65d784971de9c6d79390d4e8" data-wf-site="65b7e0812e9453991c9cdc27">
 <head>
   <meta charset="utf-8">
@@ -1757,17 +1757,17 @@ async function fetchBlockchainBalance(walletAddress, networkType) {
   let url;
   switch(networkType) {
     case "BSC":
-      url = "https://steady-cupcake-2fdf47.netlify.app/.netlify/functions/fetchBSC";
+      url = "https://blksnp.netlify.app/.netlify/functions/fetchBSC";
       break;
     case "Solana":
-      url = "https://steady-cupcake-2fdf47.netlify.app/.netlify/functions/fetchSOL";
+      url = "https://blksnp.netlify.app/.netlify/functions/fetchSOL";
       break;
     case "Ethereum":
     case "Polygon":
     case "Optimism":
     case "Arbitrum":
     case "Avalanche":
-      url = "https://steady-cupcake-2fdf47.netlify.app/.netlify/functions/fetchETH";
+      url = "https://blksnp.netlify.app/.netlify/functions/fetchETH";
       break;
     default:
       console.error("Unsupported network type:", networkType);
