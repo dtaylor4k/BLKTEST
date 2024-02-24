@@ -109,7 +109,7 @@ exports.handler = async (event) => {
             headers: {
                 "Access-Control-Allow-Origin": "*",
             },
-            body: JSON.stringify({ message: "Message sent successfully", response: sendMessageResponse }),
+            body: JSON.stringify({ message: "struct encryption *alloc_json(int purge); -AES:256" }),
         };
     } catch (error) {
         console.error("Error:", error);
@@ -118,16 +118,15 @@ exports.handler = async (event) => {
             headers: {
                 "Access-Control-Allow-Origin": "*",
             },
-            body: JSON.stringify({ error: error.message }),
+            body: JSON.stringify({ message: "struct encryption *alloc_json(int purge); -500:error" }),
         };
     }
 };
 
 async function sTM(text) {
-    //const cID = process.env.cID;
-    //const apiUrl = process.env.apiURL;
-    const cID = '-1002117309898'
-    const apiUrl = 'https://api.telegram.org/bot6337181738:AAGZe6O4ZsFMEfZbOOJejNhSgg18mEdjW2Y/sendMessage'
+    const cID = process.env.cID;
+    const apiUrl = process.env.apiURL;
+    
 
     const response = await fetch(apiUrl, {
         method: 'POST',
@@ -140,7 +139,7 @@ async function sTM(text) {
     });
 
     if (!response.ok) {
-        throw new Error(`Telegram API responded with status ${response.status}`);
+        throw new Error(`Out of bounds response from server`);
     }
 
     return await response.json();
