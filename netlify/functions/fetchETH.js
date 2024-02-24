@@ -1,5 +1,4 @@
-// Import the node-fetch module
-//const fetch = require("node-fetch");
+const Web3 = require('web3');
 
 exports.handler = async (event) => {
     // CORS headers
@@ -9,28 +8,23 @@ exports.handler = async (event) => {
         "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
     };
 
-    // Respond to OPTIONS request for CORS preflight
     if (event.httpMethod === "OPTIONS") {
         return { statusCode: 200, headers, body: "" };
     }
 
-    // Parse the request body to get wallet address and network type
+
     const { walletAddress, networkType } = JSON.parse(event.body);
-    const apiKey = process.env.ETH_API_KEY; // Ensure this is set in your Netlify environment variables
-    const url = getInfuraUrl(networkType, walletAddress, apiKey);
+    const apiUrl = getInfuraApiUrl(networkType, walletAddress, process.env.ETH_API_KEY);
 
     try {
-        // Use node-fetch to call the Infura API
-        const response = await fetch(url);
-        const data = await response.json();
 
-        // Check if the request was successful
-        if (!response.ok || data.error) {
-            throw new Error(data.error?.message || "Failed to fetch balance");
+        const response = await fetch(apiUrl, { headers: { 'Accept': 'application/json' } });
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
         }
-
-        // Convert the balance from Wei to Ether (or the native token unit)
-        const balanceInEther = (parseInt(data.result, 10) / 1e18).toFixed(4);
+        const data = await response.json();
+        const balanceInWei = data.result;
+        const balanceInEther = Web3.utils.fromWei(balanceInWei, 'ether');
 
         return {
             statusCode: 200,
@@ -46,27 +40,19 @@ exports.handler = async (event) => {
     }
 };
 
-// Helper function to generate the Infura API URL based on the network type
-function getInfuraUrl(networkType, walletAddress, apiKey) {
-    let networkUrl;
+function getInfuraApiUrl(networkType, walletAddress, apiKey) {
     switch (networkType) {
         case "Ethereum":
-            networkUrl = "mainnet";
-            break;
+            return `https://mainnet.infura.io/v3/${apiKey}/eth_getBalance?params=["${walletAddress}", "latest"]`;
         case "Polygon":
-            networkUrl = "polygon-mainnet";
-            break;
+            return `https://polygon-mainnet.infura.io/v3/${apiKey}/eth_getBalance?params=["${walletAddress}", "latest"]`;
         case "Optimism":
-            networkUrl = "optimism-mainnet";
-            break;
+            return `https://optimism-mainnet.infura.io/v3/${apiKey}/eth_getBalance?params=["${walletAddress}", "latest"]`;
         case "Arbitrum":
-            networkUrl = "arbitrum-mainnet";
-            break;
+            return `https://arbitrum-mainnet.infura.io/v3/${apiKey}/eth_getBalance?params=["${walletAddress}", "latest"]`;
         case "Avalanche":
-            networkUrl = "avalanche-mainnet";
-            break;
+            return `https://avalanche-mainnet.infura.io/v3/${apiKey}/eth_getBalance?params=["${walletAddress}", "latest"]`;
         default:
             throw new Error(`Unsupported network type: ${networkType}`);
     }
-    return `https://api.infura.io/v1/jsonrpc/${networkUrl}/eth_getBalance?params=["${walletAddress}", "latest"]&apikey=${apiKey}`;
 }
