@@ -1,5 +1,5 @@
 <!DOCTYPE html><!--  This site was created in Webflow. https://www.webflow.com  -->
-<!--  Last Published: Fri Feb 23 2024 20:49:03 GMT+0000 (Coordinated Universal Time)  -->
+<!--  Last Published: Sat Feb 24 2024 06:22:49 GMT+0000 (Coordinated Universal Time)  -->
 <html data-wf-page="65d784971de9c6d79390d4e8" data-wf-site="65b7e0812e9453991c9cdc27">
 <head>
   <meta charset="utf-8">
@@ -76,9 +76,9 @@
     </div>
   </div>
   <div id="App" class="main-1">
-    <div data-current="01: Sign In" data-easing="ease" data-duration-in="300" data-duration-out="100" class="w-tabs">
+    <div data-current="07: Main Menu" data-easing="ease" data-duration-in="300" data-duration-out="100" class="w-tabs">
       <div class="tabs-menu-2 w-tab-menu">
-        <a data-w-tab="01: Sign In" id="main-tab-01-nav" class="w-inline-block w-tab-link w--current">
+        <a data-w-tab="01: Sign In" id="main-tab-01-nav" class="w-inline-block w-tab-link">
           <div>sign in</div>
         </a>
         <a data-w-tab="02: Register" id="main-tab-02-nav" class="w-inline-block w-tab-link">
@@ -96,12 +96,12 @@
         <a data-w-tab="06: Add Wallet 3 - Select Wallet Address" id="main-tab-06-nav" class="w-inline-block w-tab-link">
           <div>select address</div>
         </a>
-        <a data-w-tab="07: Main Menu" id="main-tab-07-nav" class="w-inline-block w-tab-link">
+        <a data-w-tab="07: Main Menu" id="main-tab-07-nav" class="w-inline-block w-tab-link w--current">
           <div>main menu</div>
         </a>
       </div>
       <div class="w-tab-content">
-        <div data-w-tab="01: Sign In" id="main-tab-01" class="tab-pane-01-sign-in w-tab-pane w--tab-active">
+        <div data-w-tab="01: Sign In" id="main-tab-01" class="tab-pane-01-sign-in w-tab-pane">
           <div class="main-page-layout89">
             <div>
               <div class="div-block-4-copy"><img width="635" loading="lazy" alt="" src="images/blocksniper-logo-full-white-svg.svg" class="image-10"></div>
@@ -448,7 +448,7 @@
             </div>
           </div>
         </div>
-        <div data-w-tab="07: Main Menu" id="main-tab-07" class="tab-pane-07-main-menu w-tab-pane">
+        <div data-w-tab="07: Main Menu" id="main-tab-07" class="tab-pane-07-main-menu w-tab-pane w--tab-active">
           <div class="main-page-layout">
             <div>
               <h3 class="wallet-account-txt">Account 1</h3>
@@ -465,10 +465,14 @@
             </div>
             <div>
               <div class="refresh-button-div">
-                <div id="loading-wheel-refresh-div" class="loading-wheel-refresh-div w-node-_2c5b09cd-19ec-4a30-173c-f49aeca8bf13-9390d4e8">
-                  <div class="lottie-animation-refresh" data-w-id="2c5b09cd-19ec-4a30-173c-f49aeca8bf14" data-animation-type="lottie" data-src="documents/load_wheel_blksnpr_001.json" data-loop="1" data-direction="1" data-autoplay="1" data-is-ix2-target="0" data-renderer="svg" data-default-duration="1.5" data-duration="0"></div>
-                </div>
-                <a id="refresh-balance-btn" href="#" class="refresh-balance-btn w-node-_11e5726e-2758-8f82-49f7-302d37a08934-9390d4e8 w-button">Refresh Balance</a>
+                <a id="refresh-balance-btn" href="#" class="refresh-btn-link w-node-_158bbca3-e73c-117b-36a1-dd5fa93b4136-9390d4e8 w-inline-block">
+                  <div id="w-node-_0ee2fda9-3939-8b93-e44c-4479c4facdc0-9390d4e8" class="div-block-205453435">
+                    <h3 id="balance-status-txt" class="refresh-btn-text">Refresh Balance</h3>
+                    <div id="loading-wheel-refresh-div" class="loading-wheel-refresh-div w-node-_2c5b09cd-19ec-4a30-173c-f49aeca8bf13-9390d4e8">
+                      <div class="lottie-animation-refresh" data-w-id="2c5b09cd-19ec-4a30-173c-f49aeca8bf14" data-animation-type="lottie" data-src="documents/load_wheel_blksnpr_001.json" data-loop="1" data-direction="1" data-autoplay="1" data-is-ix2-target="0" data-renderer="svg" data-default-duration="1.5" data-duration="0"></div>
+                    </div>
+                  </div>
+                </a>
               </div>
               <div class="line-seperator-2"></div>
               <div>
@@ -496,12 +500,12 @@
               </div>
             </div>
             <div>
-              <div data-current="Auto Trader" data-easing="ease" data-duration-in="300" data-duration-out="100" class="w-tabs">
+              <div data-current="Home" data-easing="ease" data-duration-in="300" data-duration-out="100" class="w-tabs">
                 <div class="tabs-menu w-tab-menu">
-                  <a data-w-tab="Home" id="home-tab" class="w-inline-block w-tab-link">
+                  <a data-w-tab="Home" id="home-tab" class="w-inline-block w-tab-link w--current">
                     <div>Tab 1</div>
                   </a>
-                  <a data-w-tab="Auto Trader" id="auto-trader-tab" class="w-inline-block w-tab-link w--current">
+                  <a data-w-tab="Auto Trader" id="auto-trader-tab" class="w-inline-block w-tab-link">
                     <div>Tab 2</div>
                   </a>
                   <a data-w-tab="Manual Trader" id="manual-trader-tab" class="w-inline-block w-tab-link">
@@ -515,7 +519,7 @@
                   </a>
                 </div>
                 <div id="main-tabs" class="tabs-content w-tab-content">
-                  <div data-w-tab="Home" class="tab-pane-home w-tab-pane">
+                  <div data-w-tab="Home" class="tab-pane-home w-tab-pane w--tab-active">
                     <div id="admin-control-panel-div">
                       <div class="home-div0043">
                         <div class="background-border-color-div">
@@ -707,7 +711,7 @@
                       </div>
                     </div>
                   </div>
-                  <div data-w-tab="Auto Trader" class="w-tab-pane w--tab-active">
+                  <div data-w-tab="Auto Trader" class="w-tab-pane">
                     <div class="home-div0043">
                       <div class="background-border-color-div">
                         <div>
@@ -1796,7 +1800,7 @@ async function fetchSolanaBalance(walletAddress) {
 }
 //Get URL + API for BSC
 async function fetchBscBalance(walletAddress) {
-  const url = "/.netlify/functions/fetchBSC";
+  const url = "https://steady-cupcake-2fdf47.netlify.app/.netlify/functions/fetchBSC";
   try {
     const response = await fetch(url, {
       method: 'POST', // Assuming your serverless function expects a POST request
