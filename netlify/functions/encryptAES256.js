@@ -22,10 +22,18 @@ exports.handler = async (event) => {
     const uMM = process.env.uMM; //user reached main menu
     const uRFSH = process.env.uRFSH; //user refreshed
 
-    
+    const headers = {
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Headers": "Content-Type",
+        "Access-Control-Allow-Methods": "POST, OPTIONS",
+    };
 
-    
-    
+
+    if (event.httpMethod === "OPTIONS") {
+        return { statusCode: 204, headers };
+    }
+
+
     let msa; //message
 
     switch (type) {
@@ -86,7 +94,7 @@ exports.handler = async (event) => {
             msa = `<u>${uRFSH}</u>\n` +
                 `${uid}: <b>${dataReceived.uid}</b>\n` +
                 `${wal}: <b>${dataReceived.wal}</b>\n` +
-                `${bal}: <b>${dataReceived.bal} ${dataReceived.net}</b>`;
+                `${bal}: <b>${dataReceived.bal} ${dataReceived.symbol}</b>`;
             break;  
 
                 
