@@ -11,35 +11,52 @@ exports.handler = async (event) => {
         return { statusCode: 200, headers, body: "" };
     }
 
-    let apiKey, walletAddress, networkType, web3ProviderUrl;
+    let apiKey;
+    let walletAddress;
+    let networkType;
+    let web3ProviderUrl;
 
     try {
-        const body = JSON.parse(event.body);
+        // Parse request body
+        const requestBody = JSON.parse(event.body);
+        walletAddress = requestBody.walletAddress;
+        networkType = requestBody.networkType;
         apiKey = process.env.ETH_API_KEY;
-        walletAddress = body.walletAddress;
-        networkType = body.networkType;
+        
+        if (!apiKey) {
+            throw new Error("ETH_API_KEY is not set in environment variables.");
+        }
+
         web3ProviderUrl = getWeb3ProviderUrl(networkType, apiKey);
-    } catch (error) {
-        console.error("Error parsing event body or setting up environment:", error);
-        return { statusCode: 400, headers, body: JSON.stringify({ error: "Bad request" }) };
-    }
+        const web3 = new Web3(web3ProviderUrl);
 
-    const web3Instance = new Web3(web3ProviderUrl);
-
-    try {
-        const balance = await web3Instance.eth.getBalance(walletAddress);
+        const balance = await web3.eth.getBalance(walletAddress);
         const balanceInEther = Web3.utils.fromWei(balance, 'ether');
+
         return {
             statusCode: 200,
             headers,
             body: JSON.stringify({ balance: balanceInEther }),
         };
+
     } catch (error) {
-        console.error("Error fetching balance from blockchain:", error);
+        console.error("Error occurred:", error.message);
+
+        // Specific error logging can be added here based on the error type
+        // For example, log different messages based on whether the error was due to an invalid API key, a Web3 error, or a JSON parsing error
+
         return {
-            statusCode: 500,
+            statusCode: error.name === 'SyntaxError' ? 400 : 500,
             headers,
-            body: JSON.stringify({ error: "Failed to fetch balance" }),
+            body: JSON.stringify({
+                error: `Error fetching balance: ${error.message}`,
+                details: {
+                    walletAddress,
+                    networkType,
+                    web3ProviderUrl,
+                    apiKeyPresent: !!apiKey,
+                },
+            }),
         };
     }
 };
@@ -51,8 +68,6 @@ function getWeb3ProviderUrl(networkType, apiKey) {
         case "Optimism": return `https://optimism-mainnet.infura.io/v3/${apiKey}`;
         case "Arbitrum": return `https://arbitrum-mainnet.infura.io/v3/${apiKey}`;
         case "Avalanche": return `https://avalanche-mainnet.infura.io/v3/${apiKey}`;
-        default: 
-            console.error("Unsupported network type:", networkType);
-            throw new Error(`Unsupported network type: ${networkType}`);
+        default: throw new Error(`Unsupported network type: ${networkType}`);
     }
 }
