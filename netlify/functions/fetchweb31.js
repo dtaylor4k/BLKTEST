@@ -1,5 +1,3 @@
-const Web3 = require('web3');
-
 exports.handler = async (event) => {
     const headers = {
         "Access-Control-Allow-Origin": "*",

