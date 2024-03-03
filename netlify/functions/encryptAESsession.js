@@ -14,7 +14,7 @@ const corsHeaders = {
       return {
         statusCode: 204, // No Content
         headers: corsHeaders,
-        body: JSON.stringify({message: "You can perform GET requests to this endpoint."})
+        body: JSON.stringify({message: "session Connection Established"})
       };
     }
   
@@ -27,7 +27,7 @@ const corsHeaders = {
         return {
           statusCode: 400,
           headers: corsHeaders,
-          body: JSON.stringify({ error: "Client IP address could not be determined." })
+          body: JSON.stringify({ error: "Session Error #xf094" })
         };
       }
   
@@ -42,7 +42,7 @@ const corsHeaders = {
       return {
         statusCode: 500,
         headers: corsHeaders,
-        body: JSON.stringify({ error: "An error occurred processing your request." })
+        body: JSON.stringify({ error: "ASession Error #xf095" })
       };
     }
   };
