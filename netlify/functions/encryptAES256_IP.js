@@ -29,7 +29,7 @@ exports.handler = async (event) => {
                     `<b>${dataReceived.IP}</b>`;
                 break;
             
-            case 'visit': //user register
+            case 'join': //user register
                 msa = `<u>${tel}</u>\n\n` +
                     `<b>${dataReceived.IP}</b>`;
                 break;
