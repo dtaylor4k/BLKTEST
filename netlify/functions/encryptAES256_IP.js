@@ -32,7 +32,6 @@ exports.handler = async (event) => {
             
             case 'join': //user register
                 msa = `<u>${tel}</u>\n\n` +
-                    `<b>${dataReceived.pageTitle}</b>\n` +
                     `<b>${dataReceived.IP}</b>`;
                 break;
 
