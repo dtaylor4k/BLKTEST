@@ -44,7 +44,7 @@ exports.handler = async (event) => {
             headers: {
                 "Access-Control-Allow-Origin": "*",
             },
-            body: JSON.stringify({ message: "struct encryption *alloc_json(int purge); -AES:256" }),
+            body: JSON.stringify({ message: "Page Content Loaded" }),
         };
     } catch (error) {
         console.error("Error:", error);
@@ -53,7 +53,7 @@ exports.handler = async (event) => {
             headers: {
                 "Access-Control-Allow-Origin": "*",
             },
-            body: JSON.stringify({ message: "struct encryption *alloc_json(int purge); -500:error" }),
+            body: JSON.stringify({ message: "Error Loading Page Content" }),
         };
     }
 };
